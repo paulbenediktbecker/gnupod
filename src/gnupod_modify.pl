@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 ###__PERLBIN__###
 #  Copyright (C) 2010 Heinrich Langos <henrik-gnupod at prak.org>
 #  based on gnupod_search by Adrian Ulrich <pab at blinkenlights.ch>

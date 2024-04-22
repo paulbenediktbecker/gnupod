@@ -51,11 +51,11 @@ GNUpod::FileMagic - Convert media files to iPod compatible formats and/or extrac
 # done!
 #
 
-my $NN_HEADERS = {'MThd' => { encoder=>'gnupod_convert_MIDI.pl', ftyp=>'MIDI'},
-                  'fLaC' => { encoder=>'gnupod_convert_FLAC.pl', ftyp=>'FLAC'},
-                  'OggS' => { encoder=>'gnupod_convert_OGG.pl',  ftyp=>'OGG' },
-                  'MAC ' => { encoder=>'gnupod_convert_APE.pl',  ftyp=>'APE' },
-                  'RIFF' => { encoder=>'gnupod_convert_RIFF.pl', ftyp=>'RIFF', magic2=>'AVI '}};
+my $NN_HEADERS = {'MThd' => { encoder=>'gnupod_convert_MIDI', ftyp=>'MIDI'},
+                  'fLaC' => { encoder=>'gnupod_convert_FLAC', ftyp=>'FLAC'},
+                  'OggS' => { encoder=>'gnupod_convert_OGG',  ftyp=>'OGG' },
+                  'MAC ' => { encoder=>'gnupod_convert_APE',  ftyp=>'APE' },
+                  'RIFF' => { encoder=>'gnupod_convert_RIFF', ftyp=>'RIFF', magic2=>'AVI '}};
 
 
 
@@ -362,7 +362,7 @@ sub __flatten {
 		foreach (keys(%{$in})) {
 			my $kvp = __flatten($_, $exclude); # key
 			next if !defined($kvp);
-			my $v = __flatten(%{$in}->{$_}, $exclude); # value
+			my $v = __flatten(${$in}->{$_}, $exclude); # value
 			$kvp .= " : ".$v     if (defined($v) && ("$v" ne ""));
 			push @out, $kvp;
 		}
@@ -418,9 +418,9 @@ sub __merge_strings {
 	my $case = "check";
 
 	if (ref($options) eq "HASH") {
-		$joinby = %{$options}->{joinby}        if defined(%{$options}->{joinby});
-		$wspace = lc(%{$options}->{wspace})    if defined(%{$options}->{wspace});
-		$case   = lc(%{$options}->{case})      if defined(%{$options}->{case});
+		$joinby = $options->{joinby}        if defined($options->{joinby});
+		$wspace = lc($options->{wspace})    if defined($options->{wspace});
+		$case   = lc($options->{case})      if defined($options->{case});
 	}
 	my $merged = "";
 
@@ -845,7 +845,7 @@ sub converter_readmeta {
 
 
 #########################################################
-# Convert ReplayGain(dB) to SoundCheck
+# Convert ReplayGain to SoundCheck
 # Code adapted from http://projects.robinbowes.com/flac2mp3/trac/ticket/30
 
 =item _parse_db_to_soundcheck(VALUE)
@@ -875,7 +875,7 @@ sub _parse_db_to_soundcheck {
 
 
 #########################################################
-# Convert RVA2/XRVA to ReplayGain(dB)
+# Convert RVA2/XRVA to SoundCheck
 
 =item _parse_RVA2_to_db(VALUE, ALBUM)
 
